@@ -1,63 +1,77 @@
-import React from "react";
-import { View, Text, Image, ScrollView, TouchableOpacity } from "react-native";
-import { useRouter } from "expo-router";
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+  Linking,
+  ActivityIndicator,
+} from "react-native";
 import styles from "../styles/parking_screen";
-import BottomNav from "./bottomNav"; // Import bottom navigation
-
-const parkingsData = [
-  {
-    id: 1,
-    name: "ARKAN",
-    location: "GIZA",
-    image: require("../assets/arkan.png"),
-    qrCode: require("../assets/qrcode.png"),
-  },
-  {
-    id: 2,
-    name: "DISTRICT5",
-    location: "NEW CAIRO",
-    image: require("../assets/district5.png"),
-    qrCode: require("../assets/qrcode.png"),
-  },
-  {
-    id: 3,
-    name: "PARK ST",
-    location: "GIZA",
-    image: require("../assets/park_st.png"),
-    qrCode: require("../assets/qrcode.png"),
-  },
-];
+import api from "../services/api";
+import BottomNav from "./bottomNav";
 
 const ParkingScreen = () => {
-  const router = useRouter();
+  const [parkingData, setParkingData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchParkings = async () => {
+      try {
+        const res = await api.get("/parkings");
+        setParkingData(res.data);
+      } catch (err) {
+        console.error("❌ Error fetching parkings:", err.message);
+        alert("Failed to load parking data");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchParkings();
+  }, []);
+
+  const openMap = (location) => {
+    const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location)}`;
+    Linking.openURL(url);
+  };
+
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#1E90FF" />
+        <Text style={styles.loadingText}>Loading parkings...</Text>
+      </View>
+    );
+  }
 
   return (
-    <View style={{ flex: 1, backgroundColor: "#000" }}>
-      <View style={styles.container}>
+    <View style={styles.screen}>
+      <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.header}>PARKINGS</Text>
-        <ScrollView contentContainerStyle={styles.parkingList}>
-          {parkingsData.map((parking) => (
-            <View key={parking.id} style={styles.parkingCard}>
-              <Image source={parking.image} style={styles.parkingImage} />
-              <Text style={styles.parkingName}>{parking.name}</Text>
-              <Text style={[styles.parkingName, { top: 44, fontSize: 16 }]}>
-                {parking.location}
-              </Text>
-              <View style={styles.qrContainer}>
-                <Image source={parking.qrCode} style={styles.qrCode} />
-              </View>
-              <TouchableOpacity
-                style={styles.navigateButton}
-                onPress={() => router.push(`/parking/${parking.id}`)}
-              >
-                <Text style={styles.navigateIcon}>➜</Text>
-              </TouchableOpacity>
-            </View>
-          ))}
-        </ScrollView>
-      </View>
 
-      {/* Bottom Navigation Bar */}
+        {parkingData.map((parking) => (
+          <View key={parking._id} style={styles.card}>
+            <Image
+              source={{ uri: parking.image_url }}
+              style={styles.image}
+              resizeMode="cover"
+            />
+            <Text style={styles.name}>{parking.name}</Text>
+            <Text style={styles.location}>📍 {parking.location}</Text>
+            <Text style={styles.fee}>💰 {parking.hourly_rate} EGP/hr</Text>
+
+            <TouchableOpacity
+              style={styles.mapButton}
+              onPress={() => openMap(parking.location)}
+            >
+              <Text style={styles.mapButtonText}>Open in Google Maps</Text>
+            </TouchableOpacity>
+          </View>
+        ))}
+      </ScrollView>
+
       <BottomNav />
     </View>
   );
