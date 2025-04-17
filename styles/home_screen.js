@@ -4,32 +4,42 @@ export default StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#000",
-    paddingTop: 40,
+    paddingTop: 50,
   },
   searchContainer: {
     marginHorizontal: 20,
-    backgroundColor: "#e5e5e5",
-    borderRadius: 20,
-    padding: 12,
+    marginTop: 20,  // ✅ Lowered the search bar slightly
+    backgroundColor: "rgba(255, 255, 255, 0.15)",  // ✅ Subtle transparency effect
+    borderRadius: 25,  // ✅ Softer edges for a premium look
+    padding: 14,
     flexDirection: "row",
     alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+    elevation: 8,  // ✅ Subtle depth effect
   },
   searchInput: {
     flex: 1,
-    color: "#000",
+    color: "#fff",  // ✅ White text for better visibility
+    fontSize: 16,  // ✅ Slightly larger for a cleaner look
   },
   logoContainer: {
     alignItems: "center",
-    marginVertical: 20,
+    marginVertical: 30,  // ✅ More breathing room
   },
   logo: {
-    width: 120,
-    height: 120,
+    width: 130,  // ✅ Slightly larger for a premium feel
+    height: 130,
     resizeMode: "contain",
   },
   tagline: {
     color: "#e5e5e5",
-    fontSize: 14,
+    fontSize: 16,  // ✅ Increased font size
+    fontWeight: "500",
+    textTransform: "uppercase",  // ✅ More stylish appearance
+    letterSpacing: 1,
   },
   menuContainer: {
     alignItems: "center",
@@ -38,35 +48,49 @@ export default StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    backgroundColor: "#333",
-    paddingVertical: 20,  // Increased height
-    paddingHorizontal: 20,
-    marginVertical: 12,   // Increased spacing
+    backgroundColor: "#222",  // ✅ Darker, richer background
+    paddingVertical: 24,  // ✅ More padding for a **chic, spacious** design
+    paddingHorizontal: 24,
+    marginVertical: 15,  // ✅ Better spacing between menu items
     width: "90%",
-    borderRadius: 12,     // Slightly larger rounding
+    borderRadius: 18,  // ✅ Smoother rounding for a **modern look**
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+    elevation: 6,  // ✅ Smooth depth
   },
   icon: {
-    width: 70,   // Increased icon size
-    height: 70,
+    width: 75,   // ✅ Increased icon size for better presence
+    height: 75,
     resizeMode: "contain",
   },
   menuText: {
     color: "#fff",
-    fontSize: 18, // Slightly larger font
+    fontSize: 16,  
     fontWeight: "bold",
-    flex: 1, // Ensures text takes available space
+    flex: 1,  // Ensures text takes available space
     textAlign: "center",
+    textTransform: "uppercase",  // ✅ Gives a **modern, clean feel**
+    letterSpacing: 1,
   },
   arrowContainer: {
     backgroundColor: "#1E90FF", // Blue background
-    width: 40,
-    height: 40,
-    borderRadius: 20, // Make it a perfect circle
+    width: 45,
+    height: 45,
+    borderRadius: 22.5, // ✅ Perfectly rounded
     alignItems: "center",
     justifyContent: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+    elevation: 8,  // ✅ Gives a slight pop effect
   },
   arrow: {
-    color: "#fff",  // White arrow
-    fontSize: 20,   // Slightly larger arrow
+    color: "#fff",
+    fontSize: 22,  // ✅ Slightly larger arrow
+    fontWeight: "bold",
   },
 });
+

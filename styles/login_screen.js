@@ -49,4 +49,14 @@ export default StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
   },
+  registerLink: {
+    marginTop: 20,
+    alignItems: "center",
+  },
+  
+  registerText: {
+    color: "#ccc",
+    fontSize: 14,
+  },
+  
 });
