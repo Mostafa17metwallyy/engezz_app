@@ -1,31 +1,53 @@
 const User = require("../models/User");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 
-// ======================
-// REGISTER USER
-// ======================
+// Get current user profile (via token)
+const getUserProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select("-password_hash");
+    if (!user) return res.status(404).json({ message: "User not found" });
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch user", error: error.message });
+  }
+};
+
+// Update user by ID
+const updateUserProfile = async (req, res) => {
+  try {
+    const updates = req.body;
+    const user = await User.findByIdAndUpdate(req.params.id, updates, { new: true });
+    if (!user) return res.status(404).json({ message: "User not found" });
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to update profile", error: error.message });
+  }
+};
+
+// Delete user by ID
+const deleteUserAccount = async (req, res) => {
+  try {
+    await User.findByIdAndDelete(req.params.id);
+    res.json({ message: "User account deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to delete account", error: error.message });
+  }
+};
+
 const registerUser = async (req, res) => {
-  console.log("📥 Incoming registration request headers:", req.headers);
-  console.log("📥 Incoming registration request body:", req.body);
-
   const { name, email, phone_number, password, vehicle_plate_number } = req.body;
 
   try {
     if (!name || !email || !phone_number || !password || !vehicle_plate_number) {
-      console.log("⚠️ Missing fields");
       return res.status(400).json({ message: "All fields are required." });
     }
 
-    const existingUser = await User.findOne({
-      $or: [{ email }, { vehicle_plate_number }],
-    });
+    const existingUser = await User.findOne({ $or: [{ email }, { vehicle_plate_number }] });
 
     if (existingUser) {
       return res.status(400).json({ message: "Email or plate number already in use." });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await require("bcryptjs").hash(password, 10);
 
     const user = await User.create({
       name,
@@ -35,7 +57,6 @@ const registerUser = async (req, res) => {
       vehicle_plate_number,
     });
 
-    console.log("✅ User created:", user);
     res.status(201).json({
       message: "User registered successfully",
       user: {
@@ -46,14 +67,10 @@ const registerUser = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error("❌ Registration failed:", error);
     res.status(500).json({ message: "Registration failed", error: error.message });
   }
 };
 
-// ======================
-// LOGIN USER
-// ======================
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
@@ -61,10 +78,10 @@ const loginUser = async (req, res) => {
     const user = await User.findOne({ email });
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    const isMatch = await bcrypt.compare(password, user.password_hash);
+    const isMatch = await require("bcryptjs").compare(password, user.password_hash);
     if (!isMatch) return res.status(401).json({ message: "Invalid credentials" });
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+    const token = require("jsonwebtoken").sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "7d",
     });
 
@@ -78,9 +95,14 @@ const loginUser = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error("❌ Login Error:", error.message);
     res.status(500).json({ message: "Login failed", error: error.message });
   }
 };
 
-module.exports = { registerUser, loginUser };
+module.exports = {
+  registerUser,
+  loginUser,
+  getUserProfile,
+  updateUserProfile,
+  deleteUserAccount,
+};
