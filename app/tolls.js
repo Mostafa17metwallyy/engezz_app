@@ -19,7 +19,7 @@ const TollsScreen = () => {
   useEffect(() => {
     const fetchTolls = async () => {
       try {
-        const res = await api.get("/tolls");
+        const res = await api.get("/api/tolls");
         setTollsData(res.data);
       } catch (err) {
         console.error("❌ Error fetching tolls:", err.message);

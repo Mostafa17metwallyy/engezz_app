@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, FlatList, Image, TouchableOpacity } from "react-native";
+import { View, Text, FlatList, Image, TouchableOpacity, ScrollView } from "react-native";
 import { useRouter } from "expo-router";
 import styles from "../styles/favorites_screen";
 import BottomNav from "./bottomNav";
@@ -10,14 +10,14 @@ const dummyFavorites = [
     type: "TOLL",
     name: "CAIRO-ALEX",
     location: "Cairo Alexandria Desert Road",
-    image_url: "http://172.20.10.5:5000/images/cairo_alex.png",
+    image_url: "http://192.168.1.13:3000/api/images/cairo_alex.png",
   },
   {
     id: 2,
     type: "PARKING",
     name: "ARKAN",
     location: "GIZA",
-    image_url: "http://172.20.10.5:5000/images/arkan.png",
+    image_url: "http://192.168.1.13:3000/api/images/arkan.png",
   },
 ];
 
@@ -26,25 +26,22 @@ const FavoritesScreen = () => {
 
   const handleNavigation = (item) => {
     if (item.type === "TOLL") {
-      router.push("/tolls"); // ✅ full screen for tolls
+      router.push("/tolls");
     } else if (item.type === "PARKING") {
-      router.push("/parkings"); // ✅ full screen for parking
+      router.push("/parkings");
     }
   };
 
   return (
-    <View style={styles.screen}>
-      <Text style={styles.header}>Your Favorites</Text>
+    <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.listContainer}>
+        <Text style={styles.header}>Your Favorites</Text>
 
-      {dummyFavorites.length === 0 ? (
-        <Text style={styles.emptyText}>You have no favorites yet.</Text>
-      ) : (
-        <FlatList
-          data={dummyFavorites}
-          keyExtractor={(item) => item.id.toString()}
-          contentContainerStyle={styles.listContainer}
-          renderItem={({ item }) => (
-            <TouchableOpacity style={styles.card} onPress={() => handleNavigation(item)}>
+        {dummyFavorites.length === 0 ? (
+          <Text style={styles.emptyText}>You have no favorites yet.</Text>
+        ) : (
+          dummyFavorites.map((item) => (
+            <TouchableOpacity key={item.id} style={styles.card} onPress={() => handleNavigation(item)}>
               <Image source={{ uri: item.image_url }} style={styles.image} />
               <View style={styles.textContainer}>
                 <Text style={styles.name}>{item.name}</Text>
@@ -53,9 +50,9 @@ const FavoritesScreen = () => {
                 </Text>
               </View>
             </TouchableOpacity>
-          )}
-        />
-      )}
+          ))
+        )}
+      </ScrollView>
 
       <BottomNav />
     </View>

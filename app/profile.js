@@ -1,13 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  Button,
-  Alert,
-  ScrollView,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, TextInput, ScrollView, TouchableOpacity, Alert } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import api from "../services/api";
 import BottomNav from "./bottomNav";
@@ -23,7 +15,7 @@ const ProfileScreen = () => {
   const fetchUser = async () => {
     try {
       const token = await AsyncStorage.getItem("token");
-      const res = await api.get("/users/me", {
+      const res = await api.get("api/users/me", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUser(res.data);
@@ -48,7 +40,7 @@ const ProfileScreen = () => {
         updatePayload.password = newPassword;
       }
 
-      await api.put(`/users/${user._id}`, updatePayload, {
+      await api.put(`api/users/${user._id}`, updatePayload, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -65,11 +57,10 @@ const ProfileScreen = () => {
   const handleDelete = async () => {
     try {
       const token = await AsyncStorage.getItem("token");
-      await api.delete(`/users/${user._id}`, {
+      await api.delete(`api/users/${user._id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       Alert.alert("Deleted", "Your account has been deleted.");
-      // Optional: Navigate to login
     } catch (err) {
       Alert.alert("Error", "Account deletion failed.");
     }
@@ -84,76 +75,72 @@ const ProfileScreen = () => {
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <Text style={styles.header}>👤 User Profile</Text>
+        <Text style={styles.header}>User Profile</Text>
 
         {editMode ? (
           <>
-            <TextInput
-              style={styles.input}
-              value={formData.name}
-              onChangeText={(val) => setFormData({ ...formData, name: val })}
-              placeholder="Name"
-              placeholderTextColor="#888"
-            />
-            <TextInput
-              style={styles.input}
-              value={formData.phone_number}
-              onChangeText={(val) =>
-                setFormData({ ...formData, phone_number: val })
-              }
-              placeholder="Phone Number"
-              placeholderTextColor="#888"
-              keyboardType="phone-pad"
-            />
-            <TextInput
-              style={styles.input}
-              value={formData.vehicle_plate_number}
-              onChangeText={(val) =>
-                setFormData({ ...formData, vehicle_plate_number: val })
-              }
-              placeholder="Vehicle Plate Number"
-              placeholderTextColor="#888"
-            />
-
-            {/* Toggle Password Change */}
-            {showPasswordChange && (
+            <View style={styles.card}>
               <TextInput
                 style={styles.input}
-                placeholder="New Password"
-                secureTextEntry
-                value={newPassword}
-                onChangeText={setNewPassword}
+                value={formData.name}
+                onChangeText={(val) => setFormData({ ...formData, name: val })}
+                placeholder="Name"
                 placeholderTextColor="#888"
               />
-            )}
+              <TextInput
+                style={styles.input}
+                value={formData.phone_number}
+                onChangeText={(val) => setFormData({ ...formData, phone_number: val })}
+                placeholder="Phone Number"
+                placeholderTextColor="#888"
+                keyboardType="phone-pad"
+              />
+              <TextInput
+                style={styles.input}
+                value={formData.vehicle_plate_number}
+                onChangeText={(val) => setFormData({ ...formData, vehicle_plate_number: val })}
+                placeholder="Vehicle Plate Number"
+                placeholderTextColor="#888"
+              />
 
-            <TouchableOpacity
-              onPress={() => setShowPasswordChange(!showPasswordChange)}
-              style={styles.toggleLink}
-            >
-              <Text style={styles.toggleText}>
-                {showPasswordChange ? "Cancel Password Change" : "Change Password"}
-              </Text>
-            </TouchableOpacity>
+              {showPasswordChange && (
+                <TextInput
+                  style={styles.input}
+                  placeholder="New Password"
+                  secureTextEntry
+                  value={newPassword}
+                  onChangeText={setNewPassword}
+                  placeholderTextColor="#888"
+                />
+              )}
 
-            <TouchableOpacity style={styles.saveBtn} onPress={handleUpdate}>
-              <Text style={styles.saveText}>💾 Save Changes</Text>
-            </TouchableOpacity>
+              <TouchableOpacity onPress={() => setShowPasswordChange(!showPasswordChange)} style={styles.toggleLink}>
+                <Text style={styles.toggleText}>
+                  {showPasswordChange ? "Cancel Password Change" : "Change Password"}
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity style={[styles.saveBtn, styles.actionButton]} onPress={handleUpdate}>
+                <Text style={styles.saveText}>Save Changes</Text>
+              </TouchableOpacity>
+            </View>
           </>
         ) : (
           <>
-            <Text style={styles.label}>Name: <Text style={styles.value}>{user.name}</Text></Text>
-            <Text style={styles.label}>Email: <Text style={styles.value}>{user.email}</Text></Text>
-            <Text style={styles.label}>Phone: <Text style={styles.value}>{user.phone_number}</Text></Text>
-            <Text style={styles.label}>Plate: <Text style={styles.value}>{user.vehicle_plate_number}</Text></Text>
+            <View style={styles.card}>
+              <Text style={styles.label}>Name: <Text style={styles.value}>{user.name}</Text></Text>
+              <Text style={styles.label}>Email: <Text style={styles.value}>{user.email}</Text></Text>
+              <Text style={styles.label}>Phone: <Text style={styles.value}>{user.phone_number}</Text></Text>
+              <Text style={styles.label}>Plate: <Text style={styles.value}>{user.vehicle_plate_number}</Text></Text>
 
-            <TouchableOpacity style={styles.editBtn} onPress={() => setEditMode(true)}>
-              <Text style={styles.editText}>✏️ Edit Profile</Text>
-            </TouchableOpacity>
+              <TouchableOpacity style={[styles.editBtn, styles.actionButton]} onPress={() => setEditMode(true)}>
+                <Text style={styles.editText}>Edit Profile</Text>
+              </TouchableOpacity>
 
-            <TouchableOpacity style={styles.deleteBtn} onPress={handleDelete}>
-              <Text style={styles.deleteText}>🗑️ Delete Account</Text>
-            </TouchableOpacity>
+              <TouchableOpacity style={[styles.deleteBtn, styles.actionButton]} onPress={handleDelete}>
+                <Text style={styles.deleteText}>Delete Account</Text>
+              </TouchableOpacity>
+            </View>
           </>
         )}
       </ScrollView>

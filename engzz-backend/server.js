@@ -14,18 +14,20 @@ dotenv.config();
 
 const app = express();
 
-app.use(cors({
+/*app.use(cors({
   origin: '*',
-  methods: ['GET', 'POST'],
-  allowedHeaders: ['Content-Type'],
-}));
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+})); */
+app.use(cors())
+
 
 app.use(express.json());
 
 // ✅ Serve static images
-app.use("/images", express.static("public/images"));
+app.use("/api/images", express.static("public/images"));
 
-// ✅ Routes
+// ✅ Routes 
 app.use('/api/users', userRoutes);
 app.use('/api/tolls', tollRoutes);
 app.use("/api/parkings", parkingRoutes);
@@ -46,11 +48,16 @@ const getLocalIP = () => {
   return 'localhost';
 };
 
-const PORT = process.env.PORT || 5000;
+//const PORT = process.env.PORT || 5000;
+const PORT = 3000;
 const LOCAL_IP = getLocalIP();
 
-app.listen(PORT, () => {
+/*app.listen(PORT, () => {
   console.log(`🚀 Server is running!`);
   console.log(`🔗 Local:     http://localhost:${PORT}`);
   console.log(`📱 Mobile IP: http://${LOCAL_IP}:${PORT}`);
+});*/
+
+app.listen(PORT, '0.0.0.0',() => {
+  console.log(`Server is running at http://localhost:${PORT}`);
 });

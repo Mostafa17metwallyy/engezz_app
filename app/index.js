@@ -13,7 +13,7 @@ const LoginScreen = () => {
 
   const handleLogin = async () => {
     try {
-      const res = await api.post("/users/login", { email, password });
+      const res = await api.post("/api/users/login", { email, password });
       const { token, user } = res.data;
 
       // 🔐 Save token securely

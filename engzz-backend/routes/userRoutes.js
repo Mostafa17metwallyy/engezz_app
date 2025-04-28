@@ -17,6 +17,9 @@ const auth = require("../middleware/auth");
 router.post("/register", registerUser);
 router.post("/login", loginUser);
 
+router.get("/", (req, res) => {
+  res.send("let's build a crud Api")
+})
 // 🟢 Forgot Password - NO AUTH REQUIRED
 router.put("/reset-password", async (req, res) => {
   const { email, newPassword } = req.body;

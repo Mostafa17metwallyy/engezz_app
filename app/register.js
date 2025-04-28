@@ -17,7 +17,7 @@ const RegisterScreen = () => {
     console.log("📤 Sending registration payload:", user);
   
     try {
-      const res = await api.post("/users/register", user);
+      const res = await api.post("/api/users/register", user);
       console.log("✅ Register success:", res.data);
       Alert.alert("Success", "User registered successfully!");
       router.replace("/");

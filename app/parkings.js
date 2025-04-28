@@ -19,7 +19,7 @@ const ParkingScreen = () => {
   useEffect(() => {
     const fetchParkings = async () => {
       try {
-        const res = await api.get("/parkings");
+        const res = await api.get("/api/parkings");
         setParkingData(res.data);
       } catch (err) {
         console.error("❌ Error fetching parkings:", err.message);

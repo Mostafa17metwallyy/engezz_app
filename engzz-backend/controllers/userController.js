@@ -34,6 +34,7 @@ const deleteUserAccount = async (req, res) => {
 };
 
 const registerUser = async (req, res) => {
+  console.log("👉 REGISTER BODY", req.body);
   const { name, email, phone_number, password, vehicle_plate_number } = req.body;
 
   try {
