@@ -126,6 +126,23 @@ const styles = StyleSheet.create({
   actionButton: {
     marginTop: 20,
   },
+  nfcBtn: {
+    backgroundColor: "#1E90FF",
+    paddingVertical: 16,
+    borderRadius: 32,
+    marginTop: 20,
+    shadowColor: "rgba(0, 0, 0, 0.7)",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.6,
+    shadowRadius: 8,
+    elevation: 10,
+  },
+  nfcText: {
+    color: "#fff",
+    fontWeight: "bold",
+    textAlign: "center",
+    fontSize: 18,
+  },
 });
 
 export default styles;

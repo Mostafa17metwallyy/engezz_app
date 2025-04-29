@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, ScrollView, Animated } from "react-native";
 import { useRouter } from "expo-router";
+import { Ionicons } from "@expo/vector-icons"; // ✅ Added
 import styles from "../styles/loyalty_screen";
-import BottomNav from "./bottomNav"; // Import bottom navigation
+import BottomNav from "./bottomNav";
 
 const LoyaltyProgram = () => {
   const router = useRouter();
@@ -36,7 +37,7 @@ const LoyaltyProgram = () => {
 
   const toggleSelection = (id) => {
     if (selectedPlan === id) {
-      setSelectedPlan(null); // Deselect plan if it's already selected
+      setSelectedPlan(null);
     } else {
       setSelectedPlan(id);
       Animated.spring(animation, {
@@ -49,27 +50,35 @@ const LoyaltyProgram = () => {
 
   return (
     <View style={styles.container}>
+      {/* 🔙 Back Button */}
+      <TouchableOpacity
+        onPress={router.back}
+        style={{
+          position: "absolute",
+          top: 30,
+          left: 10,
+          zIndex: 100,
+          backgroundColor: "#1e1e1e",
+          padding: 10,
+          borderRadius: 30,
+        }}
+      >
+        <Ionicons name="arrow-back" size={24} color="#fff" />
+      </TouchableOpacity>
+
       <ScrollView contentContainerStyle={styles.plansList}>
         <Text style={styles.header}>Get Engezz Premium</Text>
 
         {plans.map((plan) => (
           <TouchableOpacity
             key={plan.id}
-            style={[
-              styles.planCard,
-              selectedPlan === plan.id && styles.selectedPlan,
-            ]}
+            style={[styles.planCard, selectedPlan === plan.id && styles.selectedPlan]}
             onPress={() => toggleSelection(plan.id)}
           >
             <Text style={styles.planPrice}>{plan.price}</Text>
             <Text style={styles.planTitle}>{plan.title}</Text>
             {selectedPlan === plan.id && (
-              <Animated.View
-                style={[
-                  styles.benefitsContainer,
-                  { opacity: animation, transform: [{ scale: animation }] },
-                ]}
-              >
+              <Animated.View style={[styles.benefitsContainer, { opacity: animation, transform: [{ scale: animation }] }]}>
                 {plan.benefits.map((benefit, index) => (
                   <Text key={index} style={styles.benefitItem}>
                     {benefit}
@@ -103,7 +112,6 @@ const LoyaltyProgram = () => {
         </TouchableOpacity>
       </ScrollView>
 
-      {/* Bottom Navigation */}
       <BottomNav />
     </View>
   );

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, TextInput, ScrollView, TouchableOpacity, Alert } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useRouter } from "expo-router"; // ✅ added
 import api from "../services/api";
 import BottomNav from "./bottomNav";
 import styles from "../styles/profile_screen";
@@ -11,6 +12,7 @@ const ProfileScreen = () => {
   const [formData, setFormData] = useState({});
   const [showPasswordChange, setShowPasswordChange] = useState(false);
   const [newPassword, setNewPassword] = useState("");
+  const router = useRouter(); // ✅ added
 
   const fetchUser = async () => {
     try {
@@ -139,6 +141,14 @@ const ProfileScreen = () => {
 
               <TouchableOpacity style={[styles.deleteBtn, styles.actionButton]} onPress={handleDelete}>
                 <Text style={styles.deleteText}>Delete Account</Text>
+              </TouchableOpacity>
+
+              {/* NEW: NFC Sticker Button */}
+              <TouchableOpacity
+                style={[styles.nfcBtn, styles.actionButton]}
+                onPress={() => router.push("/NFCStickerScreen")}
+              >
+                <Text style={styles.nfcText}>View NFC Sticker</Text>
               </TouchableOpacity>
             </View>
           </>

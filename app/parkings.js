@@ -8,11 +8,14 @@ import {
   Linking,
   ActivityIndicator,
 } from "react-native";
+import { useRouter } from "expo-router";
+import { Ionicons } from "@expo/vector-icons"; // ✅ Added
 import styles from "../styles/parking_screen";
 import api from "../services/api";
 import BottomNav from "./bottomNav";
 
 const ParkingScreen = () => {
+  const router = useRouter();
   const [parkingData, setParkingData] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -28,7 +31,6 @@ const ParkingScreen = () => {
         setLoading(false);
       }
     };
-
     fetchParkings();
   }, []);
 
@@ -48,16 +50,28 @@ const ParkingScreen = () => {
 
   return (
     <View style={styles.screen}>
+      {/* 🔙 Back Button */}
+      <TouchableOpacity
+        onPress={router.back}
+        style={{
+          position: "absolute",
+          top: 50,
+          left: 20,
+          zIndex: 100,
+          backgroundColor: "#1e1e1e",
+          padding: 10,
+          borderRadius: 30,
+        }}
+      >
+        <Ionicons name="arrow-back" size={24} color="#fff" />
+      </TouchableOpacity>
+
       <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.header}>PARKINGS</Text>
 
         {parkingData.map((parking) => (
           <View key={parking._id} style={styles.card}>
-            <Image
-              source={{ uri: parking.image_url }}
-              style={styles.image}
-              resizeMode="cover"
-            />
+            <Image source={{ uri: parking.image_url }} style={styles.image} resizeMode="cover" />
             <Text style={styles.name}>{parking.name}</Text>
             <Text style={styles.location}>📍 {parking.location}</Text>
             <Text style={styles.fee}>💰 {parking.hourly_rate} EGP/hr</Text>

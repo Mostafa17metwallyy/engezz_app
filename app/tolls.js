@@ -8,11 +8,14 @@ import {
   Linking,
   ActivityIndicator,
 } from "react-native";
+import { useRouter } from "expo-router";
+import { Ionicons } from "@expo/vector-icons"; // ✅ Added
 import api from "../services/api";
-import styles from "../styles/tolls_screen"; // ✅ Import external styles
+import styles from "../styles/tolls_screen";
 import BottomNav from "./bottomNav";
 
 const TollsScreen = () => {
+  const router = useRouter();
   const [tollsData, setTollsData] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -28,7 +31,6 @@ const TollsScreen = () => {
         setLoading(false);
       }
     };
-
     fetchTolls();
   }, []);
 
@@ -48,16 +50,28 @@ const TollsScreen = () => {
 
   return (
     <View style={styles.screen}>
+      {/* 🔙 Back Button */}
+      <TouchableOpacity
+        onPress={router.back}
+        style={{
+          position: "absolute",
+          top: 50,
+          left: 20,
+          zIndex: 100,
+          backgroundColor: "#1e1e1e",
+          padding: 10,
+          borderRadius: 30,
+        }}
+      >
+        <Ionicons name="arrow-back" size={24} color="#fff" />
+      </TouchableOpacity>
+
       <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.header}>TOLLS</Text>
 
         {tollsData.map((toll) => (
           <View key={toll._id} style={styles.tollCard}>
-            <Image
-              source={{ uri: toll.image_url }}
-              style={styles.tollImage}
-              resizeMode="cover"
-            />
+            <Image source={{ uri: toll.image_url }} style={styles.tollImage} resizeMode="cover" />
             <Text style={styles.tollName}>{toll.name}</Text>
             <Text style={styles.tollFee}>Fee: {toll.toll_fee} EGP</Text>
             <Text style={styles.tollLocation}>📍 {toll.location_name}</Text>
