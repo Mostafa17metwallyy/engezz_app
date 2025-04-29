@@ -10,14 +10,14 @@ const dummyFavorites = [
     type: "TOLL",
     name: "CAIRO-ALEX",
     location: "Cairo Alexandria Desert Road",
-    image_url: "http://192.168.1.13:3000/api/images/cairo_alex.png",
+    image_url: "http://172.20.10.5:3000/api/images/cairo_alex.png",
   },
   {
     id: 2,
     type: "PARKING",
     name: "ARKAN",
     location: "GIZA",
-    image_url: "http://192.168.1.13:3000/api/images/arkan.png",
+    image_url: "http://172.20.10.5:3000/api/images/arkan.png",
   },
 ];
 

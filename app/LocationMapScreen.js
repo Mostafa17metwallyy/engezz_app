@@ -17,8 +17,8 @@ const LocationMapScreen = () => {
   useEffect(() => {
     const fetchAllLocations = async () => {
       try {
-        const tolls = await api.get("/tolls");
-        const parkings = await api.get("/parkings");
+        const tolls = await api.get("/api/tolls");
+        const parkings = await api.get("/api/parkings");
         const all = [...tolls.data, ...parkings.data];
         setLocations(all);
       } catch (error) {

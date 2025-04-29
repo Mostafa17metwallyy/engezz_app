@@ -5,6 +5,7 @@ const Parking = require("./models/Parking");
 
 dotenv.config();
 
+// 🛠 Dynamic Local IP detection
 const getLocalIP = () => {
   const interfaces = os.networkInterfaces();
   for (const name in interfaces) {
@@ -17,14 +18,15 @@ const getLocalIP = () => {
   return "localhost";
 };
 
-const LOCAL_IP = getLocalIP();
+const LOCAL_IP = getLocalIP(); // 🚀 Local IP
 
+// ✅ Dynamically use LOCAL_IP in image_url
 const parkings = [
   {
     name: "ARKAN",
     location: "GIZA",
     hourly_rate: 20,
-    image_url: `http://$192.168.1.13:3000/api/images/arkan.png`,
+    image_url: `http://${LOCAL_IP}:3000/api/images/arkan.png`,
     location_url: "https://www.google.com/maps/place/30.017963,31.001251",
     coordinates: {
       lat: 30.017963,
@@ -35,7 +37,7 @@ const parkings = [
     name: "DISTRICT5",
     location: "NEW CAIRO",
     hourly_rate: 20,
-    image_url: `http://192.168.1.13:3000/api/images/district5.png`,
+    image_url: `http://${LOCAL_IP}:3000/api/images/district5.png`,
     location_url: "https://www.google.com/maps/place/29.985464,31.441951",
     coordinates: {
       lat: 29.985464,
@@ -46,7 +48,7 @@ const parkings = [
     name: "PARK ST",
     location: "GIZA",
     hourly_rate: 20,
-    image_url: `http://192.168.1.13:3000/api/images/park_st.png`,
+    image_url: `http://${LOCAL_IP}:3000/api/images/park_st.png`,
     location_url: "https://www.google.com/maps/place/30.021154,31.003084",
     coordinates: {
       lat: 30.021154,
@@ -55,6 +57,7 @@ const parkings = [
   },
 ];
 
+// 🚗 Database seeding
 mongoose
   .connect(process.env.MONGO_URI)
   .then(async () => {

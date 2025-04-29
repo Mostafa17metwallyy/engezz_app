@@ -17,14 +17,14 @@ const getLocalIP = () => {
   return "localhost";
 };
 
-const LOCAL_IP = getLocalIP();
+const LOCAL_IP = getLocalIP(); // 🚀 Local IP dynamically detected
 
 const tolls = [
   {
     name: "CAIRO-ALEX",
     location_name: "Cairo Alexandria Desert Road",
     toll_fee: 50,
-    image_url: `http://192.168.1.13:3000/api/images/cairo_alex.png`,
+    image_url: `http://${LOCAL_IP}:3000/api/images/cairo_alex.png`,
     location_url: "https://www.google.com/maps/place/30.100034,30.946507",
     coordinates: {
       lat: 30.100034,
@@ -35,7 +35,7 @@ const tolls = [
     name: "ELALAMIEN",
     location_name: "El Alamein Road",
     toll_fee: 40,
-    image_url: `http://192.168.1.13:3000/api/images/elalamien.png`,
+    image_url: `http://${LOCAL_IP}:3000/api/images/elalamien.png`,
     location_url: "https://www.google.com/maps/place/30.882620,28.939282",
     coordinates: {
       lat: 30.882620,
@@ -46,7 +46,7 @@ const tolls = [
     name: "GALALA",
     location_name: "Galala Mountain Road",
     toll_fee: 60,
-    image_url: `http://192.168.1.13:3000/api/images/glala.png`,
+    image_url: `http://${LOCAL_IP}:3000/api/images/glala.png`,
     location_url: "https://www.google.com/maps/place/29.366861,32.664711",
     coordinates: {
       lat: 29.366861,
