@@ -8,14 +8,14 @@ export default StyleSheet.create({
   },
   plansList: {
     paddingHorizontal: 28,
-    paddingBottom: 100,
-    marginTop: 40, // ⬇ Move plans down
+    paddingBottom: 120,
+    marginTop: 40,
   },
   header: {
     fontSize: 28,
     fontWeight: "800",
     color: "#fff",
-    marginBottom: 40, // ⬆ Added more space above
+    marginBottom: 40,
     paddingLeft: 24,
     borderLeftWidth: 6,
     borderLeftColor: "#1E90FF",
@@ -24,22 +24,16 @@ export default StyleSheet.create({
   planCard: {
     backgroundColor: "rgba(45, 45, 45, 0.85)",
     borderRadius: 32,
-    paddingVertical: 18,
-    paddingHorizontal: 18,
-    marginBottom: 24, // ⬆ Increased spacing for a cleaner look
+    paddingVertical: 20,
+    paddingHorizontal: 20,
+    marginBottom: 24,
     borderWidth: 1.2,
     borderColor: "rgba(255, 255, 255, 0.06)",
-    shadowColor: "rgba(0, 0, 0, 0.8)",
-    shadowOffset: { width: 0, height: 5 },
-    shadowOpacity: 0.6,
-    shadowRadius: 14,
-    elevation: 12,
-    transition: "all 0.3s ease-in-out",
   },
   selectedPlan: {
     borderColor: "#1E90FF",
     borderWidth: 2,
-    backgroundColor: "rgba(30, 144, 255, 0.3)",
+    backgroundColor: "rgba(30, 144, 255, 0.25)",
   },
   planPrice: {
     fontSize: 22,
@@ -51,14 +45,11 @@ export default StyleSheet.create({
     color: "#bbb",
     marginTop: 4,
   },
-  benefitsContainer: {
-    marginTop: 12,
-    paddingLeft: 10,
-  },
   benefitItem: {
     fontSize: 14,
     color: "#fff",
-    marginTop: 5,
+    marginTop: 6,
+    paddingLeft: 4,
   },
   noPlanSelected: {
     textAlign: "center",
@@ -71,16 +62,20 @@ export default StyleSheet.create({
     borderRadius: 32,
     paddingVertical: 16,
     alignItems: "center",
-    marginTop: 40, // ⬆ More space above the subscribe button
-    shadowColor: "rgba(0, 0, 0, 0.7)",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.6,
-    shadowRadius: 8,
-    elevation: 12,
+    marginTop: 40,
   },
   subscribeText: {
     fontSize: 18,
     fontWeight: "bold",
     color: "#fff",
+  },
+  backButton: {
+    position: "absolute",
+    top: 50,
+    left: 20,
+    zIndex: 100,
+    backgroundColor: "#1e1e1e",
+    padding: 10,
+    borderRadius: 30,
   },
 });

@@ -2,10 +2,9 @@ import React, { useState } from "react";
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import { useRouter } from "expo-router";
 import styles from "../styles/history_screen";
-import BottomNav from "./bottomNav"; // Import Bottom Navigation
-import Icon from "react-native-vector-icons/Ionicons"; // Import Icons
+import BottomNav from "./bottomNav";
+import Icon from "react-native-vector-icons/Ionicons";
 
-// Dummy transaction history
 const transactions = [
   { id: 1, method: "Credit/Debit Card", amount: "250 EGP", date: "March 4, 2025", icon: "card-outline" },
   { id: 2, method: "InstaPay", amount: "500 EGP", date: "March 3, 2025", icon: "cash-outline" },
@@ -19,6 +18,11 @@ const HistoryScreen = () => {
 
   return (
     <View style={styles.container}>
+      {/* 🔙 Back Button */}
+      <TouchableOpacity onPress={router.back} style={styles.backButton}>
+        <Icon name="arrow-back" size={24} color="#fff" />
+      </TouchableOpacity>
+
       <ScrollView contentContainerStyle={styles.historyList}>
         <Text style={styles.header}>Transaction History</Text>
 
@@ -38,7 +42,6 @@ const HistoryScreen = () => {
         )}
       </ScrollView>
 
-      {/* Bottom Navigation */}
       <BottomNav />
     </View>
   );

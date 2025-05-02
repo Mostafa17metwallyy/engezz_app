@@ -66,4 +66,14 @@ export default StyleSheet.create({
     textAlign: "center",
     marginTop: 50,
   },
+  backButton: {
+  position: "absolute",
+  top: 50,
+  left: 20,
+  zIndex: 100,
+  backgroundColor: "#1e1e1e",
+  padding: 10,
+  borderRadius: 30,
+},
+
 });

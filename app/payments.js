@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import { useRouter } from "expo-router";
 import styles from "../styles/payments_screen";
-import BottomNav from "./bottomNav"; // Import Bottom Navigation
-import Icon from "react-native-vector-icons/Ionicons"; // Import Icons for Payment Methods
+import BottomNav from "./bottomNav";
+import Icon from "react-native-vector-icons/Ionicons";
 
 const paymentMethods = [
   { id: 1, name: "Credit/Debit Card", icon: "card-outline" },
@@ -18,15 +18,16 @@ const PaymentsScreen = () => {
   const [selectedMethod, setSelectedMethod] = useState(null);
 
   const togglePaymentSelection = (method) => {
-    if (selectedMethod === method.id) {
-      setSelectedMethod(null); // Deselect if already selected
-    } else {
-      setSelectedMethod(method.id); // Select if not selected
-    }
+    setSelectedMethod((prev) => (prev === method.id ? null : method.id));
   };
 
   return (
     <View style={styles.container}>
+      {/* 🔙 Back Button */}
+      <TouchableOpacity onPress={router.back} style={styles.backButton}>
+        <Icon name="arrow-back" size={24} color="#fff" />
+      </TouchableOpacity>
+
       <ScrollView contentContainerStyle={styles.paymentList}>
         <Text style={styles.header}>Select a Payment Method</Text>
 
@@ -35,20 +36,20 @@ const PaymentsScreen = () => {
             key={method.id}
             style={[
               styles.paymentCard,
-              selectedMethod === method.id && styles.selectedPayment, // Highlight when selected
+              selectedMethod === method.id && styles.selectedPayment,
             ]}
             onPress={() => togglePaymentSelection(method)}
           >
             <Icon
               name={method.icon}
               size={26}
-              color={selectedMethod === method.id ? "#1E90FF" : "#fff"} // Change icon color if selected
+              color={selectedMethod === method.id ? "#1E90FF" : "#fff"}
               style={styles.paymentIcon}
             />
             <Text
               style={[
                 styles.paymentName,
-                selectedMethod === method.id && styles.selectedText, // Change text color if selected
+                selectedMethod === method.id && styles.selectedText,
               ]}
             >
               {method.name}
@@ -78,7 +79,6 @@ const PaymentsScreen = () => {
         </TouchableOpacity>
       </ScrollView>
 
-      {/* Bottom Navigation */}
       <BottomNav />
     </View>
   );

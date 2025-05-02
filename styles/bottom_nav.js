@@ -3,36 +3,30 @@ import { StyleSheet, Platform } from "react-native";
 export default StyleSheet.create({
   container: {
     flexDirection: "row",
-    justifyContent: "space-between", // Ensures equal spacing
+    justifyContent: "space-around",
     alignItems: "center",
-    backgroundColor: "#333",
-    paddingVertical: Platform.OS === "ios" ? 18 : 14, // Adjust height for different OS
-    borderTopLeftRadius: 25,
-    borderTopRightRadius: 25,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: -3 },
-    shadowOpacity: 0.3,
-    shadowRadius: 6,
-    elevation: 10,
+    backgroundColor: "#121212",
+    paddingVertical: Platform.OS === "ios" ? 25 : 16,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
     position: "absolute",
     bottom: 0,
     width: "100%",
-    paddingHorizontal: 24, // Ensures even spacing
+    paddingHorizontal: 10,
+    borderTopWidth: 0.5,
+    borderTopColor: "#000", // clean solid top border
   },
-  navItem: {
-    flex: 1, // Makes sure all items are evenly spaced
+    navItem: {
     alignItems: "center",
     justifyContent: "center",
+    paddingHorizontal: 8,
   },
   navIcon: {
-    width: 30, // Ensures all icons are the same size
-    height: 30,
-    textAlign: "center",
+    marginBottom: 2,
   },
   navText: {
-    color: "#fff",
-    fontSize: 12, // Adjusted to be more balanced
+    color: "#ccc",
+    fontSize: 12,
     textAlign: "center",
-    marginTop: 4, // Moves text closer to the icon
   },
 });

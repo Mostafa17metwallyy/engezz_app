@@ -43,7 +43,7 @@ const HomeScreen = () => {
             onPress={() => router.push("/tolls")}
           >
             <Image
-              source={require("../assets/toll_icon.png")}
+              source={require("../assets/parking_icon.png")}
               style={styles.icon}
             />
             <Text style={styles.menuText}>TOLLS</Text>
@@ -57,7 +57,7 @@ const HomeScreen = () => {
             onPress={() => router.push("/parkings")}
           >
             <Image
-              source={require("../assets/toll_icon.png")}
+              source={require("../assets/parking_icon.png")}
               style={styles.icon}
             />
             <Text style={styles.menuText}>PARKINGS</Text>

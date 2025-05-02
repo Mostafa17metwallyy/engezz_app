@@ -1,7 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TextInput, ScrollView, TouchableOpacity, Alert } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  ScrollView,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useRouter } from "expo-router"; // ✅ added
+import { useRouter } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
 import api from "../services/api";
 import BottomNav from "./bottomNav";
 import styles from "../styles/profile_screen";
@@ -12,7 +20,7 @@ const ProfileScreen = () => {
   const [formData, setFormData] = useState({});
   const [showPasswordChange, setShowPasswordChange] = useState(false);
   const [newPassword, setNewPassword] = useState("");
-  const router = useRouter(); // ✅ added
+  const router = useRouter();
 
   const fetchUser = async () => {
     try {
@@ -68,6 +76,29 @@ const ProfileScreen = () => {
     }
   };
 
+  const handleLogout = async () => {
+    Alert.alert(
+      "Confirm Logout",
+      "Are you sure you want to log out?",
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Logout",
+          style: "destructive",
+          onPress: async () => {
+            try {
+              await AsyncStorage.removeItem("token");
+              router.replace("/"); // redirect to index.js
+            } catch (err) {
+              Alert.alert("Error", "Logout failed.");
+            }
+          },
+        },
+      ],
+      { cancelable: true }
+    );
+  };
+
   useEffect(() => {
     fetchUser();
   }, []);
@@ -76,12 +107,17 @@ const ProfileScreen = () => {
 
   return (
     <View style={styles.container}>
+      {/* Back Button */}
+      <TouchableOpacity onPress={router.back} style={styles.backButton}>
+        <Ionicons name="arrow-back" size={24} color="#fff" />
+      </TouchableOpacity>
+
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <Text style={styles.header}>User Profile</Text>
 
-        {editMode ? (
-          <>
-            <View style={styles.card}>
+        <View style={styles.card}>
+          {editMode ? (
+            <>
               <TextInput
                 style={styles.input}
                 value={formData.name}
@@ -104,7 +140,6 @@ const ProfileScreen = () => {
                 placeholder="Vehicle Plate Number"
                 placeholderTextColor="#888"
               />
-
               {showPasswordChange && (
                 <TextInput
                   style={styles.input}
@@ -115,21 +150,17 @@ const ProfileScreen = () => {
                   placeholderTextColor="#888"
                 />
               )}
-
               <TouchableOpacity onPress={() => setShowPasswordChange(!showPasswordChange)} style={styles.toggleLink}>
                 <Text style={styles.toggleText}>
                   {showPasswordChange ? "Cancel Password Change" : "Change Password"}
                 </Text>
               </TouchableOpacity>
-
               <TouchableOpacity style={[styles.saveBtn, styles.actionButton]} onPress={handleUpdate}>
                 <Text style={styles.saveText}>Save Changes</Text>
               </TouchableOpacity>
-            </View>
-          </>
-        ) : (
-          <>
-            <View style={styles.card}>
+            </>
+          ) : (
+            <>
               <Text style={styles.label}>Name: <Text style={styles.value}>{user.name}</Text></Text>
               <Text style={styles.label}>Email: <Text style={styles.value}>{user.email}</Text></Text>
               <Text style={styles.label}>Phone: <Text style={styles.value}>{user.phone_number}</Text></Text>
@@ -143,16 +174,19 @@ const ProfileScreen = () => {
                 <Text style={styles.deleteText}>Delete Account</Text>
               </TouchableOpacity>
 
-              {/* NEW: NFC Sticker Button */}
               <TouchableOpacity
                 style={[styles.nfcBtn, styles.actionButton]}
                 onPress={() => router.push("/NFCStickerScreen")}
               >
                 <Text style={styles.nfcText}>View NFC Sticker</Text>
               </TouchableOpacity>
-            </View>
-          </>
-        )}
+            </>
+          )}
+
+          <TouchableOpacity style={[styles.deleteBtn, styles.actionButton]} onPress={handleLogout}>
+            <Text style={styles.deleteText}>Logout</Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
 
       <BottomNav />

@@ -1,38 +1,72 @@
 import { StyleSheet } from "react-native";
 
-const styles = StyleSheet.create({
+export default StyleSheet.create({
   container: {
-    padding: 20,
+    flex: 1,
     backgroundColor: "#000",
+  },
+  form: {
     flexGrow: 1,
     justifyContent: "center",
+    padding: 24,
   },
   title: {
     color: "#fff",
     fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 30,
     textAlign: "center",
+    marginBottom: 30,
+    letterSpacing: 1,
   },
   input: {
     backgroundColor: "#1e1e1e",
     color: "#fff",
-    padding: 12,
-    marginBottom: 15,
-    borderRadius: 10,
+    padding: 14,
+    borderRadius: 12,
+    fontSize: 16,
+    marginBottom: 10,
+    borderWidth: 1,
+    borderColor: "#2a2a2a",
+  },
+  button: {
+    backgroundColor: "#1E90FF",
+    paddingVertical: 14,
+    borderRadius: 12,
+    alignItems: "center",
+    marginTop: 20,
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+    letterSpacing: 1,
   },
   loginLink: {
-    marginTop: 20,
+    marginTop: 24,
     alignItems: "center",
   },
   loginText: {
-    color: "#b0b0b0",
+    color: "#ccc",
     fontSize: 14,
   },
   loginTextLink: {
     color: "#1E90FF",
     fontWeight: "bold",
   },
+  errorText: {
+    color: "#ff4d4d",
+    fontSize: 12,
+    marginBottom: 8,
+    marginLeft: 4,
+  },
+  passwordContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 10,
+    position: "relative",
+  },
+  eyeIcon: {
+    position: "absolute",
+    right: 14,
+  },
 });
-
-export default styles;

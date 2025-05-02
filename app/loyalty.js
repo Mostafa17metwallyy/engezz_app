@@ -1,14 +1,13 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, ScrollView, Animated } from "react-native";
+import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import { useRouter } from "expo-router";
-import { Ionicons } from "@expo/vector-icons"; // ✅ Added
+import { Ionicons } from "@expo/vector-icons";
 import styles from "../styles/loyalty_screen";
 import BottomNav from "./bottomNav";
 
 const LoyaltyProgram = () => {
   const router = useRouter();
   const [selectedPlan, setSelectedPlan] = useState(null);
-  const [animation, setAnimation] = useState(new Animated.Value(0));
 
   const plans = [
     {
@@ -36,33 +35,13 @@ const LoyaltyProgram = () => {
   ];
 
   const toggleSelection = (id) => {
-    if (selectedPlan === id) {
-      setSelectedPlan(null);
-    } else {
-      setSelectedPlan(id);
-      Animated.spring(animation, {
-        toValue: 1,
-        friction: 3,
-        useNativeDriver: true,
-      }).start();
-    }
+    setSelectedPlan((prev) => (prev === id ? null : id));
   };
 
   return (
     <View style={styles.container}>
       {/* 🔙 Back Button */}
-      <TouchableOpacity
-        onPress={router.back}
-        style={{
-          position: "absolute",
-          top: 30,
-          left: 10,
-          zIndex: 100,
-          backgroundColor: "#1e1e1e",
-          padding: 10,
-          borderRadius: 30,
-        }}
-      >
+      <TouchableOpacity onPress={router.back} style={styles.backButton}>
         <Ionicons name="arrow-back" size={24} color="#fff" />
       </TouchableOpacity>
 
@@ -77,15 +56,13 @@ const LoyaltyProgram = () => {
           >
             <Text style={styles.planPrice}>{plan.price}</Text>
             <Text style={styles.planTitle}>{plan.title}</Text>
-            {selectedPlan === plan.id && (
-              <Animated.View style={[styles.benefitsContainer, { opacity: animation, transform: [{ scale: animation }] }]}>
-                {plan.benefits.map((benefit, index) => (
-                  <Text key={index} style={styles.benefitItem}>
-                    {benefit}
-                  </Text>
-                ))}
-              </Animated.View>
-            )}
+
+            {selectedPlan === plan.id &&
+              plan.benefits.map((benefit, index) => (
+                <Text key={index} style={styles.benefitItem}>
+                  {benefit}
+                </Text>
+              ))}
           </TouchableOpacity>
         ))}
 

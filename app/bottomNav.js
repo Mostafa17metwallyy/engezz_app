@@ -7,56 +7,23 @@ import styles from "../styles/bottom_nav";
 const BottomNav = () => {
   const router = useRouter();
 
+  const navItems = [
+    { icon: "home-outline", label: "Home", path: "/HomeScreen" },
+    { icon: "location-outline", label: "Location", path: "/LocationMapScreen" },
+    { icon: "star-outline", label: "Favorites", path: "/FavoritesScreen" },
+    { icon: "card-outline", label: "Payments", path: "/payments" },
+    { icon: "time-outline", label: "History", path: "/history" },
+    { icon: "person-circle-outline", label: "Profile", path: "/profile" },
+  ];
+
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        style={styles.navItem}
-        onPress={() => router.push("./HomeScreen")}
-      >
-        <Icon name="home-outline" size={28} color="#fff" style={styles.navIcon} />
-        <Text style={styles.navText}>Home</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={styles.navItem}
-        onPress={() => router.push("/LocationMapScreen")}
-      >
-        <Icon name="location-outline" size={28} color="#fff" style={styles.navIcon} />
-        <Text style={styles.navText}>Location</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={styles.navItem}
-        onPress={() => router.push("/FavoritesScreen")}
-      >
-        <Icon name="star-outline" size={28} color="#fff" style={styles.navIcon} />
-        <Text style={styles.navText}>Favorites</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={styles.navItem}
-        onPress={() => router.push("/payments")}
-      >
-        <Icon name="card-outline" size={28} color="#fff" style={styles.navIcon} />
-        <Text style={styles.navText}>Payments</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={styles.navItem}
-        onPress={() => router.push("/history")}
-      >
-        <Icon name="time-outline" size={28} color="#fff" style={styles.navIcon} />
-        <Text style={styles.navText}>History</Text>
-      </TouchableOpacity>
-
-      {/* 🆕 Profile Icon */}
-      <TouchableOpacity
-        style={styles.navItem}
-        onPress={() => router.push("/profile")}
-      >
-        <Icon name="person-circle-outline" size={28} color="#fff" style={styles.navIcon} />
-        <Text style={styles.navText}>Profile</Text>
-      </TouchableOpacity>
+      {navItems.map((item, index) => (
+        <TouchableOpacity key={index} style={styles.navItem} onPress={() => router.push(item.path)}>
+          <Icon name={item.icon} size={24} color="#ccc" style={styles.navIcon} />
+          <Text style={styles.navText}>{item.label}</Text>
+        </TouchableOpacity>
+      ))}
     </View>
   );
 };

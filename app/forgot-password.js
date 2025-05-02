@@ -26,7 +26,7 @@ const ForgotPasswordScreen = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={[styles.title, { marginBottom: 20 }]}>🔐 Reset Password</Text>
+      <Text style={[styles.title, { marginBottom: 20 }]}> Reset Password</Text>
 
       <TextInput
         placeholder="Enter your email"
