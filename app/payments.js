@@ -1,16 +1,21 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  Linking,
+  Alert,
+} from "react-native";
 import { useRouter } from "expo-router";
 import styles from "../styles/payments_screen";
 import BottomNav from "./bottomNav";
 import Icon from "react-native-vector-icons/Ionicons";
+import { BASE_URL } from "./constants";
 
 const paymentMethods = [
   { id: 1, name: "Credit/Debit Card", icon: "card-outline" },
-  { id: 2, name: "InstaPay", icon: "cash-outline" },
-  { id: 3, name: "Apple Wallet", icon: "logo-apple" },
-  { id: 4, name: "Fawry", icon: "wallet-outline" },
-  { id: 5, name: "Vodafone Cash", icon: "phone-portrait-outline" },
+  { id: 2, name: "Meeza", icon: "cash-outline" },
 ];
 
 const PaymentsScreen = () => {
@@ -18,16 +23,57 @@ const PaymentsScreen = () => {
   const [selectedMethod, setSelectedMethod] = useState(null);
 
   const togglePaymentSelection = (method) => {
-    setSelectedMethod((prev) => (prev === method.id ? null : method.id));
+    if (selectedMethod === method.id) {
+      setSelectedMethod(null);
+    } else {
+      setSelectedMethod(method.id);
+    }
+  };
+
+  const handlePayment = async () => {
+    try {
+      const method = paymentMethods.find((m) => m.id === selectedMethod);
+
+      const res = await fetch(`${BASE_URL}/api/paymob/token`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          amount_cents: 10000, // 100 EGP
+          user: {
+            name: "Test User",
+            email: "test@email.com",
+            phone: "+201000000000",
+            method: method.name.toLowerCase().includes("meeza")
+              ? "meeza"
+              : "card",
+          },
+        }),
+      });
+
+      const text = await res.text();
+      console.log("🔍 Raw response from backend:", text);
+
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch (e) {
+        throw new Error("❌ Backend did not return JSON. Check backend logs.");
+      }
+
+      if (data.iframe_url) {
+        console.log("🔗 Redirecting to:", data.iframe_url);
+        Linking.openURL(data.iframe_url);
+      } else {
+        Alert.alert("❌ Failed", "Could not get payment link from server.");
+      }
+    } catch (err) {
+      console.error("🔥 Payment error:", err);
+      Alert.alert("❌ Error", "Something went wrong while processing payment.");
+    }
   };
 
   return (
     <View style={styles.container}>
-      {/* 🔙 Back Button */}
-      <TouchableOpacity onPress={router.back} style={styles.backButton}>
-        <Icon name="arrow-back" size={24} color="#fff" />
-      </TouchableOpacity>
-
       <ScrollView contentContainerStyle={styles.paymentList}>
         <Text style={styles.header}>Select a Payment Method</Text>
 
@@ -63,15 +109,7 @@ const PaymentsScreen = () => {
             selectedMethod ? styles.payButtonActive : styles.payButtonDisabled,
           ]}
           disabled={!selectedMethod}
-          onPress={() =>
-            alert(
-              selectedMethod
-                ? `Proceeding with: ${
-                    paymentMethods.find((m) => m.id === selectedMethod).name
-                  }`
-                : "Please select a payment method"
-            )
-          }
+          onPress={handlePayment}
         >
           <Text style={styles.payButtonText}>
             {selectedMethod ? "Proceed to Payment" : "Select a Payment Method"}

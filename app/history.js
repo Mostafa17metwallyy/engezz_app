@@ -1,40 +1,36 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import { useRouter } from "expo-router";
 import styles from "../styles/history_screen";
 import BottomNav from "./bottomNav";
 import Icon from "react-native-vector-icons/Ionicons";
-
-const transactions = [
-  { id: 1, method: "Credit/Debit Card", amount: "250 EGP", date: "March 4, 2025", icon: "card-outline" },
-  { id: 2, method: "InstaPay", amount: "500 EGP", date: "March 3, 2025", icon: "cash-outline" },
-  { id: 3, method: "Apple Wallet", amount: "1200 EGP", date: "March 1, 2025", icon: "logo-apple" },
-  { id: 4, method: "Fawry", amount: "80 EGP", date: "Feb 27, 2025", icon: "wallet-outline" },
-  { id: 5, method: "Vodafone Cash", amount: "330 EGP", date: "Feb 25, 2025", icon: "phone-portrait-outline" },
-];
+import { BASE_URL } from "./constants";
 
 const HistoryScreen = () => {
+  const [transactions, setTransactions] = useState([]);
   const router = useRouter();
+
+  useEffect(() => {
+    fetch(`${BASE_URL}/api/transactions`)
+      .then(res => res.json())
+      .then(data => setTransactions(data))
+      .catch(err => console.error("Failed to fetch transactions", err));
+  }, []);
 
   return (
     <View style={styles.container}>
-      {/* 🔙 Back Button */}
-      <TouchableOpacity onPress={router.back} style={styles.backButton}>
-        <Icon name="arrow-back" size={24} color="#fff" />
-      </TouchableOpacity>
-
       <ScrollView contentContainerStyle={styles.historyList}>
         <Text style={styles.header}>Transaction History</Text>
 
         {transactions.length > 0 ? (
-          transactions.map((transaction) => (
-            <TouchableOpacity key={transaction.id} style={styles.transactionCard}>
-              <Icon name={transaction.icon} size={26} color="#1E90FF" style={styles.transactionIcon} />
+          transactions.map((t, i) => (
+            <TouchableOpacity key={i} style={styles.transactionCard}>
+              <Icon name="card-outline" size={26} color="#1E90FF" style={styles.transactionIcon} />
               <View style={styles.transactionDetails}>
-                <Text style={styles.method}>{transaction.method}</Text>
-                <Text style={styles.date}>{transaction.date}</Text>
+                <Text style={styles.method}>{t.transaction_type}</Text>
+                <Text style={styles.date}>{new Date(t.transaction_time).toDateString()}</Text>
               </View>
-              <Text style={styles.amount}>{transaction.amount}</Text>
+              <Text style={styles.amount}>{t.amount} EGP</Text>
             </TouchableOpacity>
           ))
         ) : (

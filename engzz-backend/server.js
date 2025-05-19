@@ -9,6 +9,8 @@ const connectDB = require('./config/db');
 const userRoutes = require('./routes/userRoutes');
 const tollRoutes = require('./routes/tollRoutes');
 const parkingRoutes = require("./routes/parkingRoutes");
+const transaction =require("./routes/transactions.js");
+const paymob=require("./routes/paymob");
 
 dotenv.config();
 
@@ -23,6 +25,9 @@ app.use("/api/images", express.static(path.join(__dirname, "public/images")));
 app.use('/api/users', userRoutes);
 app.use('/api/tolls', tollRoutes);
 app.use("/api/parkings", parkingRoutes);
+app.use("/api/transactions", transaction);
+app.use("/api/paymob", paymob);
+
 
 // DB Connection
 connectDB();
